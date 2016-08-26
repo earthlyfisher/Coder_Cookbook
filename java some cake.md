@@ -55,10 +55,11 @@ public static void testForJDK17() {
 		System.out.println(c==d.intern());//true
 	}
 ```
-以下是具体描述
->Area: HotSpot
->
->Synopsis: In JDK 7, interned strings are no longer allocated in the permanent generation of the Java heap, but are instead allocated in the main part of the Java heap (known as the young and old generations), along with the other objects created by the application. This change will result in more data residing in the main Java heap, and less data in the permanent generation, and thus may require heap sizes to be adjusted. Most applications will see only relatively small differences in heap usage due to this change, but larger applications that load many classes or make heavy use of the String.intern() method will see more significant differences.
+ 以下是具体描述
+  >Area: HotSpot
+  >
+  >Synopsis: In JDK 7, interned strings are no longer allocated in the permanent generation of the Java heap, but are instead   allocated in the main part of the Java heap (known as the young and old generations), along with the other objects created by the application. This change will result in more data residing in the main Java heap, and less data in the permanent generation, and thus may require heap sizes to be adjusted. Most applications will see only relatively small differences in heap usage due to this change, but larger applications that load many classes or make heavy use of the String.intern() method will see more significant differences.
+   
 ##路径获取
 ```java
 /**
