@@ -135,16 +135,16 @@ public static void main(String[] args) {
 	}
 ```
 ##ConcurrentModificationException while Iterating over ArrayList
-![](WebContent/md/ConcurrentModificationException while Iterating over ArrayList.png)
+![](md/ConcurrentModificationException while Iterating over ArrayList.png)
 
 ##3 ways to find duplicate elements in an array Java
-![](WebContent/md/3 ways to find duplicate elements in an array Java.png)
+![](md/3 ways to find duplicate elements in an array Java.png)
 
 ##Difference between Direct and Mapped ByteBuffer in Java
-![](WebContent/md/Difference between Direct and Mapped ByteBuffer in Java.jpg)
+![](md/Difference between Direct and Mapped ByteBuffer in Java.jpg)
 ##异常的分类
 所有异常都是Throwable的子类，根据使用类别分为Exception和Error，Error是由于系统问题造成的，如内存空间不足等，而Exception是具体的异常的父类，根据编译器和运行期分为受检查异常和运行时异常，具体的集成结构图如下:
-![](WebContent/md/exception  navigator.png)
+![](md/exception  navigator.png)
 ##Map
 `HashMap`通过hashtable实现key-value的存储，按照key的hashCode存储，可以有null key
 `TreeMap`是有序的，通过key的Comparable比较器实现key-value的有序存储
