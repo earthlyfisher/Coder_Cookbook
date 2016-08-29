@@ -1,0 +1,213 @@
+#配置JDK
+##1. 卸载JDK
+```shell
+[xsdbc[@localhost](http://my.oschina.net/u/570656) ~]$ rpm -qa | grep openjdk | grep -v grep 
+java-1.7.0-openjdk-1.7.0.75-2.5.4.2.el7_0.x86_64 
+java-1.6.0-openjdk-devel-1.6.0.34-1.13.6.1.el7_0.x86_64 
+java-1.7.0-openjdk-headless-1.7.0.75-2.5.4.2.el7_0.x86_64 
+java-1.6.0-openjdk-1.6.0.34-1.13.6.1.el7_0.x86_64 
+java-1.7.0-openjdk-devel-1.7.0.75-2.5.4.2.el7_0.x86_64
+```
+##2. 依次卸载
+```
+rpm -e –nodeps java-1.7.0-openjdk-1.7.0.75-2.5.4.2.el7_0.x86_64 
+rpm -e –nodeps java-1.6.0-openjdk-devel-1.6.0.34-1.13.6.1.el7_0.x86_64 
+rpm -e –nodeps java-1.7.0-openjdk-headless-1.7.0.75-2.5.4.2.el7_0.x86_64 
+rpm -e –nodeps java-1.6.0-openjdk-1.6.0.34-1.13.6.1.el7_0.x86_64 
+rpm -e –nodeps java-1.7.0-openjdk-devel-1.7.0.75-2.5.4.2.el7_0.x86_64
+```
+##3. 下载对应版本的JDK
+http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
+##4. 解压安装
+```
+[root@localhost java]# mkdir /usr/local/java
+[root@localhost java]# tar -zxvf jdk-7u79-linux-x64.tar.gz 
+```
+##5. 设置环境变量
+```shell
+export JAVA_HOME=/usr/local/java/jdk1.7.0_79
+export PATH=$PATH:/usr/local/java/jdk1.7.0_79/bin
+export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+```
+使用`source /etc/profile`命令重新加载`/etc/profile`文件，使修改的内容在当前shell窗口中生效。（永久生效，重启系统或注销用户）
+##6. 测试
+```
+[root@localhost jdk1.7.0_79]# java -version
+java version "1.7.0_79"
+Java(TM) SE Runtime Environment (build 1.7.0_79-b15)
+Java HotSpot(TM) Client VM (build 24.79-b02, mixed mode)
+```
+以上整个安装过程就OK了
+
+**但是整个过程太麻烦，可以通过shell脚本的方式快速实现.**
+##7. 安装脚本
+```shell
+#!/bin/bash
+# shell script to install jdk 
+
+# 1\. remove openjdk if exists.
+
+for i in $(rpm -qa | grep openjdk | grep -v grep)
+do
+  echo "Deleting rpm -> "$i
+  rpm -e --nodeps $i
+done
+
+if [[ ! -z $(rpm -qa | grep jdk | grep -v grep) ]];
+then 
+  echo "-->Failed to remove the defult Jdk."
+else 
+
+# 2.tar and install JDK(jdk-7u75-linux-x64.tar.gz)
+
+  tar -zxvf jdk-7u75-linux-x64.tar.gz
+  mkdir /usr/java
+  mv ./jdk1.7.0_75 /usr/java/jdk1.7.0_75
+  rm -rf ./jdk1.7.0_75
+
+# 3\. config /etc/profile
+
+  echo "export JAVA_HOME=/usr/java/jdk1.7.0_75" >>/etc/profile
+  echo -e 'export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar'>>/etc/profile
+  echo -e 'export PATH=$PATH:$JAVA_HOME/bin'>>/etc/profile
+
+  source /etc/profile  
+
+fi
+```
+#TOMCAT
+##1. 下载对应版本
+##2. 解压缩
+`[root@localhost tomcat]# tar -zxvf apache-tomcat-7.0.69.tar.gz`
+##3. 开放端口
+```
+##开放8080
+[root@localhost bin]# /sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
+##开放443
+[root@localhost bin]# /sbin/iptables -I INPUT -p tcp --dport 443 -j ACCEPT
+##保存配置
+[root@localhost bin]# /etc/rc.d/init.d/iptables save
+iptables: Saving firewall rules to /etc/sysconfig/iptables:[  OK  ]
+##重启防火墙服务
+[root@localhost bin]# service iptables restart
+iptables: Setting chains to policy ACCEPT: filter          [  OK  ]
+iptables: Flushing firewall rules:                         [  OK  ]
+iptables: Unloading modules:                               [  OK  ]
+iptables: Applying firewall rules:                         [  OK  ]
+##查看注册表状态
+[root@localhost bin]# /etc/init.d/iptables status
+Table: filter
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+1    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:443 
+2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8080 
+3    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED 
+4    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           
+5    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:22 
+7    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-host-prohibited 
+
+Chain FORWARD (policy ACCEPT)
+num  target     prot opt source               destination         
+1    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-host-prohibited 
+
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination
+```
+以上就可以远程访问了:
+http://10.72.14.220:8080/
+##注册成服务
+###1.创建tomcat文件
+```
+#!/bin/bash
+ #
+ # kenny kenny.zhou@tom.com
+ # /etc/rc.d/init.d/tomcat
+ # init script for tomcat precesses
+ #
+ # processname: tomcat
+ # description: tomcat is a j2se server
+ # chkconfig: 2345 86 16
+ # description: Start up the Tomcat servlet engine.
+
+#java
+export JAVA_HOME=/usr/local/java/jdk1.7.0_79
+export PATH=$PATH:/usr/local/java/jdk1.7.0_79/bin
+export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+#tomcat
+export CATALINA_HOME=/usr/local/tomcat/apache-tomcat-7.0.69/bin
+
+if [ -f /etc/init.d/functions ]; then
+ . /etc/init.d/functions
+ elif [ -f /etc/rc.d/init.d/functions ]; then
+ . /etc/rc.d/init.d/functions
+ else
+ echo -e "/atomcat: unable to locate functions lib. Cannot continue."
+ exit -1
+ fi
+
+RETVAL=$?
+ CATALINA_HOME="/usr/local/tomcat/apache-tomcat-7.0.69/"
+
+case "$1" in
+start)
+ if [ -f $CATALINA_HOME/bin/startup.sh ];
+ then
+ echo $"Starting Tomcat"
+ $CATALINA_HOME/bin/startup.sh
+ fi
+ ;;
+ stop)
+ if [ -f $CATALINA_HOME/bin/shutdown.sh ];
+ then
+ echo $"Stopping Tomcat"
+ $CATALINA_HOME/bin/shutdown.sh
+ fi
+ ;;
+ *)
+ echo $"Usage: $0 {start|stop}"
+ exit 1
+ ;;
+ esac
+
+exit $RETVAL
+```
+###2.将该文件移到/etc/init.d/文件夹下
+###3.授权
+`chmod -r 777 tomcat`
+###4.服务stop或start，restart
+```
+[root@localhost init.d]# service tomcat stop
+Stopping Tomcat
+Using CATALINA_BASE:   /usr/local/tomcat/apache-tomcat-7.0.69/
+Using CATALINA_HOME:   /usr/local/tomcat/apache-tomcat-7.0.69/
+Using CATALINA_TMPDIR: /usr/local/tomcat/apache-tomcat-7.0.69//temp
+Using JRE_HOME:        /usr/local/java/jdk1.7.0_79
+Using CLASSPATH:       /usr/local/tomcat/apache-tomcat-7.0.69//bin/bootstrap.jar:/usr/local/tomcat/apache-tomcat-7.0.69//bin/tomcat-juli.jar
+[root@localhost init.d]# service tomcat start
+```
+###5.设置开机启动
+`chkconfig --add tomcat `
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
