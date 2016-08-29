@@ -21,7 +21,7 @@ public static void main(String[] args) {
 ```
 ##异常的分类
 所有异常都是Throwable的子类，根据使用类别分为Exception和Error，Error是由于系统问题造成的，如内存空间不足等，而Exception是具体的异常的父类，根据编译器和运行期分为受检查异常和运行时异常，具体的集成结构图如下:
-![](md/exception  navigator.png)
+![](../images/exception  navigator.png)
 ##代理模式和装饰模式的区别
 两者是相似，但是有些细微的区别，主要是方法粒度不一样，装饰模式一般只是对特定行为方法增加额外职责；而代理模式则是所有方法增加新职责，而且这个新职责是一个方面或一系列的，并且装饰模式可以有装饰链。
 ##i++,i=i++

@@ -18,14 +18,14 @@ java是毕业后工作中用到的第一语言，在工作中使用了快4年了
 
 ------
 以下是这些年的一些例子和遇到的坑：
-* [遇到的一些坑](java some cake.md)
-* [java并发的一些案例](JUC案例.md)
-* [一些NIO使用案例](NIO.md)
-* [序列化](序列化.md)
-* [集合使用](集合要点.md)
-* [单例模式实现](Singleton Pattern.md)
-* [Spring的细节](Spring.md)
-* [java复制文件的几种方式](java复制文件的几种方式.md)
+* [遇到的一些坑](book/java some cake.md)
+* [java并发的一些案例](book/JUC案例.md)
+* [一些NIO使用案例](book/NIO.md)
+* [序列化](book/序列化.md)
+* [集合使用](book/集合要点.md)
+* [单例模式实现](book/Singleton Pattern.md)
+* [Spring的细节](book/Spring.md)
+* [java复制文件的几种方式](book/java复制文件的几种方式.md)
 
 
 
