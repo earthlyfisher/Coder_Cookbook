@@ -26,6 +26,9 @@ java是毕业后工作中用到的第一语言，在工作中使用了快4年了
 * [单例模式实现](book/Singleton Pattern.md)
 * [Spring的细节](book/Spring.md)
 * [java复制文件的几种方式](book/java复制文件的几种方式.md)
+* [AsynTask回调机制](book/AsynTask回调机制.md)
+* [Threadlocal使用详解](book/Threadlocal使用详解.md)
+* [一次环境部署之旅](book/一次环境部署之旅.md)
 
 
 
