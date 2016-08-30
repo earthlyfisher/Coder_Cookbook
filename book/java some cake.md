@@ -110,9 +110,10 @@ public class StaticTest
 }
 ```
 ***
-+2
+~2
 3
 a=110,b=0
 1
 4
+~
 
