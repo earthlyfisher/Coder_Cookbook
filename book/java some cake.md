@@ -24,6 +24,8 @@ public static void main(String[] args) {
 ![](../image/exception  navigator.png)
 ##代理模式和装饰模式的区别
 两者是相似，但是有些细微的区别，主要是方法粒度不一样，装饰模式一般只是对特定行为方法增加额外职责；而代理模式则是所有方法增加新职责，而且这个新职责是一个方面或一系列的，并且装饰模式可以有装饰链。
+其中java `IO`处理用到了装饰器模式,具体的层次结构如下图
+![](../image/io-decorator.png)
 ##i++,i=i++
 针对为什么`int i=1;i=i++;`后`i==1`，有疑惑，以下是相关字节码，释疑解惑啊.
 `i++`对应bytecode
