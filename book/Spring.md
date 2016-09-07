@@ -133,12 +133,12 @@ Spring通过`TransactionManager`来实现事务管理，现有两种方式，一
 通过这个`web.xml`，引出了另一个问题，即`web.xml`文件的加载顺序是什么样的？
 通过查看tomcat源码，tomcat加载web.xml的顺序是:
 ```
-context-param--->listener--->filter--->servlet
+context-param ---> listener ---> filter ---> servlet
 ```
 <p>
 首先tomcat会生成一个程序应用级`ServletContext`,全局唯一，其中将`context-param`放在第一位主要是listener和filter会用到配置的初始化参数，
 比如Spring配置的`contextConfigLocation`,在`ContextLoaderLister`加载时会从`ServletContext`的初始化参数中获取配置文件，进行bean的初始化操作.
-上面还有一点，那就是`servlet`的加载，当`load-on-startup`大于等于0时，表示在tomcat容器启动时加载这个`Servlet,否则，在第一次使用时才加载.
+上面还有一点，那就是`servlet`的加载，当`load-on-startup`大于等于0时，表示在tomcat容器启动时加载这个`Servlet`,否则，在第一次使用时才加载.
 </p>
 ###`<mvc:annotation-driven />`
 `<mvc:annotation-driven />` 是一种简写形式，完全可以手动配置替代这种简写形式。`<mvc:annotation-driven />`
