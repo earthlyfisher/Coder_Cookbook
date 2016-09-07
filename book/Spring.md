@@ -47,16 +47,20 @@ public class UserServiceImpl implements UserService
  这4个`BeanPostProcessor`.注册这4个bean处理器主要的作用是为了你的系统能够识别相应的注解。
  如果想使用`@Autowired`,`@PersistenceContext`,`@Required`,`@Resource`,`@PostConstruct`,`@PreDestroy`,就需要按照传统声明一条一条去声明注解Bean，就会显得十分繁琐.
  因此如果在Spring的配置文件中事先加上`<context:annotation-config/>`这样一条配置的话，那么所有注解的传统声明就可以被忽略，即不用在写传统的声明，Spring会自动完成声明。
+ 
  ###`<context:component-scan base-package="com.xx" />`
+ 
  `<context:component-scan/>`的作用是让Bean定义注解工作起来,也就是上述传统声明方式.它的base-package属性指定了需要扫描的类包，类包及其递归子包中所有的类都会被处理。
  值得注意的是`<context:component-scan/>`不但启用了对类包进行扫描以实施注释驱动 Bean 定义的功能，同时还启用了注释驱动自动注入的功能（即还隐式地在内部注册了`AutowiredAnnotationBeanPostProcessor`
  和`CommonAnnotationBeanPostProcessor`），因此当使用`<context:component-scan/>`后，就可以将`<context:annotation-config/>`移除了。
+ 
  ###`@Autowired`
+ 
  `@Autowired`可以对成员变量、方法和构造函数进行标注，来完成自动装配的工作。`@Autowired`的标注位置不同
  它们都会在Spring在初始化这个bean时，自动装配这个属性。注解之后就不需要`set/get`方法了。
-###事务管理
+##事务管理
 Spring通过`TransactionManager`来实现事务管理，现有两种方式，一种是通过aop注入式的方式实现，另一种是通过`@Transactional`在方法上实现事务管理.
-####aop注入式
+###aop注入式
 ```
     <bean id="txManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -91,7 +95,7 @@ Spring通过`TransactionManager`来实现事务管理，现有两种方式，一
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="module-pointcut" />
 	</aop:config>
 ```
-####`@Transactional`
+###`@Transactional`
 需要在配置文件中有tx相关的注解.
 ```
 <!-- 此注解表示声明式事务，在方法上通过@Transactional控制事务 -->
