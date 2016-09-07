@@ -1,5 +1,7 @@
 #spring要点
 ##DI,IOC
+DI(依赖注入)是spring的核心功能之一。
+Dependency Injection 和 Inversion of Control 其实就是一个东西的两种不同的说法而已。本质上是一回事。Dependency Injection 是一个程序设计模式和架构模型， 一些时候也称作 Inversion of Control，尽管在技术上来讲，Dependency Injection 是一个 Inversion of Control 的特殊实现，Dependency Injection 是指一个对象应用另外一个对象来提供一个特殊的能力，例如：把一个数据库连接以参数的形式传到一个对象的结构方法里面而不是在那个对象内部自行创建一个连接。Inversion of Control 和 Dependency Injection 的基本思想就是把类的依赖从类内部转化到外部以减少依赖。 应用Inversion of Control，对象在被创建的时候，由一个调控系统内所有对象的外界实体，将其所依赖的对象的引用，传递给它。也可以说，依赖被注入到对象中。所以，Inversion of Control 是，关于一个对象如何获取他所依赖的对象的引用，这个责任的反转。IoC是通过处理对象定义依赖的方式来工作，也就是说，一起协作的对象，要么通过构造函数参数来获得，要么在构造之后给对象设置属性来获得，要么从工厂方法返回的方式来获得。容器先创建bean，然后再注入这些依赖。这个获取过程是完全反过来的，所以命名为控制反转(IoC)。
 
 ##Spring beans定义和依赖实现方式
 *Spring的单例scope是容器级别的，即一个容器一个bean实例,spring的单例实例缓存在ConcurrentHashMap中;而GOF的单例模式是基于ClassLoader的，即一个类加载器只能有一个实例*
