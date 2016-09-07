@@ -150,3 +150,37 @@ public Customer get(Customer entity) {
 ------------------
 *Redis存储时不能使用user作为key值*
 ------------------
+##事务管理
+使用普通的Jedis可以通过`multi`来开启事务，通过`exec`提交,`discard`回滚.
+```java
+        Jedis jedis=RedisUtils.getJedis();
+		Transaction tx=jedis.multi();
+		try{
+			for(int i=0;i<10;i++){
+				tx.set("wangyp"+i, "Gavin"+i);
+			}
+			List<Object> result=tx.exec();
+			for(Object obj:result){
+				System.out.println(obj);
+			}
+		}catch(Exception e){
+			tx.discard();
+		}finally {
+			jedis.disconnect();
+		}
+```
+通过Spring管理
+首先在配置文件中开启`enableTransactionSupport`，即：
+```
+   <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="redisConnectFactory" />
+		<!-- p:enableTransactionSupport 需要设置为true,才能开启Redis事务管理控制 -->
+		<property name="enableTransactionSupport" value="true" />
+	</bean>
+```
+然后在方法中使用,例如：
+```java
+@Transactional(propagation=Propagation.REQUIRED)
+public UserType registerUser(Customer customer) {
+```
+会在方法执行前默认`multi`来开启事务，结束后通过`exec`提交,异常后通过`discard`回滚.
