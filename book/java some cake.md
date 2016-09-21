@@ -45,7 +45,7 @@ public static void main(String[] args) {
 7: return  
 ```
 ##常量池的变化
-JDK1.7的新变化，将`constant pool`从`pemgen`挪到了`heap`，对于`intern`操作首先判断对中有没有该常亮的引用，如果没有，则直接此对象就成为常量，可通过以下代码查看。
+JDK1.7的新变化，将`constant pool`从`pemgen`挪到了`heap`，对于`intern`操作首先判断对中有没有该常量的引用，如果没有，则直接此对象就成为常量，可通过以下代码查看。
 ```java
 public static void testForJDK17() {
 		String a = "e";
