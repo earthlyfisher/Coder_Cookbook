@@ -122,6 +122,27 @@ Changes not staged for commit:
 ##多人协作
 一般在项目中需要`master`,`dev`,`bug`,`feature`分支作为基础的开发,各分支的管理如下：
 * master分支是主分支，因此要时刻与远程同步；
+
 * dev分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
+
 * bug分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug；
+
 * feature分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发
+
+#标签管理
+* 命令`git tag <name>`用于新建一个标签，默认为`HEAD`，也可以指定一个`commit id`；
+
+* `git tag -a <tagname> -m "blablabla..."`可以指定标签信息；
+
+* `git tag -s <tagname> -m "blablabla..."`可以用`PGP`签名标签；
+
+* 命令`git tag`可以查看所有标签。
+
+* 命令`git push origin <tagname>`可以推送一个本地标签；
+
+* 命令`git push origin --tags`可以推送全部未推送过的本地标签；
+
+* 命令`git tag -d <tagname>`可以删除一个本地标签；
+
+* 命令`git push origin :refs/tags/<tagname>`可以删除一个远程标签
+
