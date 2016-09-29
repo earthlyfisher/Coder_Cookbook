@@ -55,7 +55,7 @@ $ git checkout -- 13.txt
 
 总之，就是让这个文件回到最近一次`git commit`或`git add`时的状态。
 
-*`git checkout -- file`命令中的--很重要，没有--，就变成了“切换到另一个分支”的命令，我们在后面的分支管理中会再次遇到`git checkout`命令*
+*`git checkout -- file`命令中的`--`很重要，没有`--`，就变成了“切换到另一个分支”的命令，我们在后面的分支管理中会再次遇到`git checkout`命令*
 
 #远程仓库
 ##添加远程库
@@ -67,7 +67,7 @@ $ git checkout -- 13.txt
 ```
 $ git remote add origin git@github.com:earthlyfisher/java-book.git
 ```
-添加后，远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
+添加后，远程库的名字就是`origin`，这是Git默认的叫法，也可以改成别的，但是`origin`这个名字一看就知道是远程库。
 
 以上必须将`SSH Key公钥`添加到`github`账户列表中.
 
