@@ -18,7 +18,7 @@
  */
 public class SingleInstance {
 
-	public SingleInstance() {
+	private SingleInstance() {
 		super();
 	}
 
