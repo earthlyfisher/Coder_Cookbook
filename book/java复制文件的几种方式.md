@@ -93,6 +93,7 @@ public static void copyFileByMappedByteBuffer(String srcFileName , String dstFil
 	}
 ```
 当然以上处理，会生成大量的对象，内存使用会急速上升.
+##通过`Files`实现
 ```java
 	public static void copyFileByFiles(String srcFileName, String dstFileName) {
 		try {
@@ -102,4 +103,4 @@ public static void copyFileByMappedByteBuffer(String srcFileName , String dstFil
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	```
+```
