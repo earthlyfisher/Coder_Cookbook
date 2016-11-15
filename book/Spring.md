@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService
 ```
 当通过`@Autowired`注入时，默认是通过类型匹配具体的实现类的，但是如果接口有多个实现类，Spring容器是没法做选择的，有两种方式解决这个问题：
 1.	`@Primary`注解，指定当有多个候选实现时，首选这个实现.
-   2.`@Qualifier`注解指定不同实现不同的限定符，在具体注入时，通过该注解具体限定.
+    2.`@Qualifier`注解指定不同实现不同的限定符，在具体注入时，通过该注解具体限定.
 
 *@Resource的作用相当于@Autowired，只不过@Autowired按byType自动注入，而@Resource默认按 byName自动注入*
 *bean实例的初始化顺序：静态代码块(变量)-->实例代码块-->构造方法-->postConstruct-->init-->......-->preDestroy-->destroy*
@@ -40,10 +40,12 @@ public class UserServiceImpl implements UserService
 ###配置解释
 ####`<context:annotation-config/>`
  `<context:annotation-config/>`这样一条配置，它的作用是隐式的向`Spring`容器注册
-                           `AutowiredAnnotationBeanPostProcessor`,
-                           `CommonAnnotationBeanPostProcessor`,
-                           `PersistenceAnnotationBeanPostProcessor`,
-                           `RequiredAnnotationBeanPostProcessor` 
+```java
+ AutowiredAnnotationBeanPostProcessor,
+ CommonAnnotationBeanPostProcessor,
+ PersistenceAnnotationBeanPostProcessor,
+ RequiredAnnotationBeanPostProcessor 
+```
  这4个`BeanPostProcessor`.注册这4个bean处理器主要的作用是为了你的系统能够识别相应的注解。
  如果想使用`@Autowired`,`@PersistenceContext`,`@Required`,`@Resource`,`@PostConstruct`,`@PreDestroy`,就需要按照传统声明一条一条去声明注解Bean，就会显得十分繁琐.
  因此如果在Spring的配置文件中事先加上`<context:annotation-config/>`这样一条配置的话，那么所有注解的传统声明就可以被忽略，即不用在写传统的声明，Spring会自动完成声明。
@@ -61,9 +63,9 @@ public class UserServiceImpl implements UserService
 ##事务管理
 Spring通过`TransactionManager`来实现事务管理，现有两种方式，一种是通过aop注入式的方式实现，另一种是通过`@Transactional`在方法上实现事务管理.
 ###aop注入式
-```
+```xml
     <bean id="txManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
@@ -97,7 +99,7 @@ Spring通过`TransactionManager`来实现事务管理，现有两种方式，一
 ```
 ###`@Transactional`
 需要在配置文件中有tx相关的注解.
-```
+```xml
 <!-- 此注解表示声明式事务，在方法上通过@Transactional控制事务 -->
     <tx:annotation-driven transaction-manager="txManager" />
 ```
@@ -109,7 +111,7 @@ Spring通过`TransactionManager`来实现事务管理，现有两种方式，一
 ##spring mvc
 ###Configuring a servlet container
 通过`org.springframework.web.servlet.DispatcherServlet`管理，在`web.xml`里面配置：
-```
+```xml
 <servlet>
         <servlet-name>rest</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -126,7 +128,7 @@ Spring通过`TransactionManager`来实现事务管理，现有两种方式，一
     </servlet-mapping>
 ```
 如果
-```
+```xml
     <init-param>  
 	      <param-name>contextConfigLocation</param-name>  
           <param-value>/WEB-INF/rest-servlet.xml</param-value>  
@@ -234,3 +236,10 @@ public class SpringServletContainerInitializer
 ```
 
 可以看到`SpringServletContainerInitializer`实现了`SpringServletContainerInitializer`,而`spring`通过注解`@HandlesTypes({WebApplicationInitializer.class})`来实现扫描`WebApplicationInitializer`该类，并将其注入到`Set集`.
+
+一些链接：
+
+* [基于纯Java代码的Spring容器和Web容器零配置的思考和实现（3） - 使用配置](https://my.oschina.net/devleon/blog/530953)
+* [AOP那些事](https://my.oschina.net/huangyong/blog/161338)
+
+
