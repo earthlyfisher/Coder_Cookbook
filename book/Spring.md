@@ -60,7 +60,43 @@ public class UserServiceImpl implements UserService
 
  `@Autowired`可以对成员变量、方法和构造函数进行标注，来完成自动装配的工作。`@Autowired`的标注位置不同
  它们都会在Spring在初始化这个bean时，自动装配这个属性。注解之后就不需要`set/get`方法了。
+## AOP那些事
+
+AOP(面向切面的编程)是通过划分关注点，来做一些事，这些事在实际编程中与整体业务无关，比如事务控制，日志管理等,通过aop将其与业务代码解耦，以实现精简的业务编码.其整体描述为`在什么时候做什么事`.
+
+AOP三要素: 
+
+* 方面（Aspect）--多个通知和切点的集合
+
+
+* 切入点（Pointcut）--在什么地方
+* 通知(增强处理)（Advice）--在什么时候干什么事
+   * 比如有`MethodInterceptor`,`AfterAdvice`,`BeforeAdvice`等.描述的是在什么时候做一些增强处理.
+
+在**编程配置**中,如下：
+
+```xml
+<bean id="methodAdvice" class="com.earthlyfish.aop.EhcacheAroundAdvice">
+	<property name="cache" ref="methodCache"></property>
+	</bean>
+
+	<!-- 配置切点,通知 -->
+	<aop:config>
+		<aop:pointcut
+			expression="(execution(public * com.earthlyfish.service..get*(..))) or (execution(public * com.earthlyfish.service..find*(..)))"
+			id="methodCachePoint" />
+		<aop:advisor advice-ref="methodAdvice" pointcut-ref="methodCachePoint" />
+	</aop:config>
+```
+
+<aop:pointcut>：用来定义切入点，该切入点可以重用
+
+<aop:advisor>:用来定义只有一个通知和一个切入点的切面
+
+<aop:aspect>：用来定义切面，该切面可以包含多个切入点和通知，而且标签内部的通知和切入点定义是无序的；和advisor的区别就在此，advisor只包含一个通知和一个切入点
+
 ##事务管理
+
 Spring通过`TransactionManager`来实现事务管理，现有两种方式，一种是通过aop注入式的方式实现，另一种是通过`@Transactional`在方法上实现事务管理.
 ###aop注入式
 ```xml
@@ -108,7 +144,14 @@ Spring通过`TransactionManager`来实现事务管理，现有两种方式，一
 @Transactional(propagation=Propagation.REQUIRED)
 	public UserType registerUser(Customer customer) {
 ```
+对于这种方式，如果一个类里面有两个方法A和B，A方法调用了B方法，如果调用A方法的话,整个事务运用会有下面三种情况：
+
+1. A上加了注解，B上不加，则整体会受事务控制.
+2. A上加了注解，B上加，则整体会受事务控制.其实这里调用和1一样，在AOP代理时只给A方法加了环绕事务通知.
+3. A上不加注解，B上加，则整体不受事务控制.这是因为调用A方法时由于没有判断到事务注解的存在，因此代理类没有声称事务控制的字节码，这直接使用的被代理类的字节码，所以不受事务控制.
+
 ##spring mvc
+
 ###Configuring a servlet container
 通过`org.springframework.web.servlet.DispatcherServlet`管理，在`web.xml`里面配置：
 ```xml
