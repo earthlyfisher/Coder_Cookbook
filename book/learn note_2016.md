@@ -490,21 +490,22 @@ System.out.println(a+b==c);//
 
 **与`HashTable`的比较**：
 
-1. `HashTable`不允许key-value为null,而`HashMap`则可以，由于`HashMap`对这种情况做了特殊处理，而`HashTable`通过null key做hash码的时候会报空指针。
+1.    `HashTable`不允许key-value为null,而`HashMap`则可以，由于`HashMap`对这种情况做了特殊处理，而`HashTable`通过null key做hash码的时候会报空指针。
 
-   ```java
-   //HashMap
-   public V put(K key, V value) {
-           if (table == EMPTY_TABLE) {
-               inflateTable(threshold);
-           }
-           if (key == null)
-               return putForNullKey(value);
-     
-     
-      /**
-        * Offloaded version of put for null keys
-        */
+      ```java
+      //HashMap
+      public V put(K key, V value) {
+              if (table == EMPTY_TABLE) {
+                  inflateTable(threshold);
+              }
+              if (key == null)
+                  return putForNullKey(value);
+        
+        
+         /**
+      * Offloaded version of put for null keys
+      */
+      ```
        private V putForNullKey(V value) {
            for (Entry<K,V> e = table[0]; e != null; e = e.next) {
                if (e.key == null) {
@@ -571,7 +572,37 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 	}
 ```
 
-
+> 一道**印象深刻**的题，怎么对HashMap<Integer,Integer>的元素按value的大小排序，通过实现`Comparator`重写`compare`方法来完成。
+>
+> ```java
+> public class Test {
+> 	
+> 	public static void main(String[] args) {
+> 		HashMap<Integer,Integer> map=new HashMap<>();
+> 		for(int i=0;i<10;i++){
+> 			map.put(i, 10-i);
+> 		}
+> 		Set<Entry<Integer, Integer>> set=map.entrySet();
+> 		for(Entry<Integer, Integer> entry:set){
+> 			System.out.println(entry.getValue());
+> 		}
+> 		System.out.println("==================================");
+> 		List<Entry<Integer,Integer>> list=new ArrayList<Entry<Integer,Integer>>(set);
+> 		Collections.sort(list, new HashMapComp());
+> 		for(Entry<Integer, Integer> entry:list){
+> 			System.out.println(entry.getValue());
+> 		}
+> 	}
+> 	
+> }
+>
+> class HashMapComp implements Comparator<Entry<Integer,Integer>>{
+> 	@Override
+> 	public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
+> 		return o1.getValue().compareTo(o2.getValue());
+> 	}
+> } 
+> ```
 
 
 
