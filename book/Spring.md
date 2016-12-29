@@ -32,9 +32,9 @@ public class UserServiceImpl implements UserService
 ```
 当通过`@Autowired`注入时，默认是通过类型匹配具体的实现类的，但是如果接口有多个实现类，Spring容器是没法做选择的，有两种方式解决这个问题：
 1.	`@Primary`注解，指定当有多个候选实现时，首选这个实现.
-    2.`@Qualifier`注解指定不同实现不同的限定符，在具体注入时，通过该注解具体限定.
+2.	`@Qualifier`注解指定不同实现不同的限定符，在具体注入时，通过该注解具体限定.
 
-*@Resource的作用相当于@Autowired，只不过@Autowired按byType自动注入，而@Resource默认按 byName自动注入*
+*@Resource的 作用相当于@Autowired，只不过@Autowired按byType自动注入，而@Resource默认按 byName自动注入*
 *bean实例的初始化顺序：静态代码块(变量)-->实例代码块-->构造方法-->postConstruct-->init-->......-->preDestroy-->destroy*
 
 ###配置解释
