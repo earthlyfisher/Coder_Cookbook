@@ -586,7 +586,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 > 			System.out.println(entry.getValue());
 > 		}
 > 		System.out.println("==================================");
-> 		List<Entry<Integer,Integer>> list=new ArrayList<Entry<Integer,Integer>>(set);
+> 		List<Entry<Integer,Integer>> list=new            ArrayList<Entry<Integer,Integer>>(set);
 > 		Collections.sort(list, new HashMapComp());
 > 		for(Entry<Integer, Integer> entry:list){
 > 			System.out.println(entry.getValue());
@@ -603,11 +603,80 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 > } 
 > ```
 
+## 下半场
 
+不知不觉已经放了这么多天，今天2016最后一天，有点时间正好把剩下的再总结下，说实话，今年过的相对容易，没有前两年那么忙，个人时间很多，促使自己看了很多书，学了很多习哈哈，^_^。
 
+* `worker`模型
 
+在重新整理并重构项目的任务处理模块时，接触到了`worker`模型，该模型不干扰主程序功能层次，通过将任务交给第三方工人负责就ok啦，具体的执行和运作由Worker帮你完成（当然在同步串行性要求高的情况下这还有待商榷），但是就项目的一般处理或者更复杂的处理这是完全ok的。
 
+![](../image/worker.png)
 
+上图是基本的实现思想。
+
+* `tomcat`的运行机制
+
+   说实话，这一块还需要花时间研究下，花了两天(当然加起来估计不到一上午)看了下结构，
+
+  **初衷？**
+
+  因为我当时做过一个小例子，针对` no web.xml `而实现web项目，但是一直有个疑惑，tomcat启动过程中在找不到web.xml文件的情况，怎么找到我自己实现的初始化器？
+
+  **Answer**
+
+  通过研究源码，直到是这么个过程：
+
+  1. 在`classpath:/WEB-INF/lib/`下查找`jar`(在`/META-INF/services/`下有无文件名为`javax.servlet.ServletContainerInitializer`的文件)，如果有此文件，则解析此文件，将其字符串标识的类作为该Context的初始化器。
+  2. 解析上面的Context的初始化器`@HandlesTypes`注解的values值，以标识该初始化器需要初始化那些类型(包括该类型的子类)。
+  3. 在`classpath:/WEB-INF/classes/`下查找上面第二步values值所表示的类或者该类的子类，作为需要Set集合传入由该初始化器加载。
+  4. 通过反射调用此初始化器的`onStartup(Set<Class<?>> webAppInitializerClasses, ServletContext servletContext)`启动。
+
+  *上面这个过程在`Spring`的`spring-web`中已经实现:*
+
+  ```java
+  #/META-INF/services/javax.servlet.ServletContainerInitializer内容
+  org.springframework.web.SpringServletContainerInitializer
+    
+  #org.springframework.web.SpringServletContainerInitializer内容
+  @HandlesTypes(WebApplicationInitializer.class)
+  public class SpringServletContainerInitializer implements ServletContainerInitializer {
+    @Override
+  	public void onStartup(Set<Class<?>> webAppInitializerClasses, ServletContext servletContext)
+  			throws ServletException {
+                
+  			}
+  }
+
+  #我自己实现的WebApplicationInitializer
+   public class DefaultConfigration implements WebApplicationInitializer {
+  	@Override
+  	public void onStartup(ServletContext container) throws ServletException {
+
+  		// 配置Spring提供的字符编码过滤器
+  		javax.servlet.FilterRegistration.Dynamic filter = container.addFilter("encoding",
+  				new CharacterEncodingFilter());
+  		// 配置过滤器的过滤路径
+  		filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/");
+
+  		// 基于注解配置的Spring容器上下文
+  		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
+  		// 注册Spring容器配置类
+  		rootContext.register(AppConfig.class);
+  		container.addListener(new ContextLoaderListener(rootContext));
+  	}
+  }
+  ```
+
+  上面使整个过程,通过自己实现初始化器，对`servlet`,`filter`,`listener`，`初始化上下文`等的加载有了进一步的概念。
+
+  下面是一张tomcat的实现基本结构图：
+
+  ![](../image/tomcat-struct.gif)
+
+  具体的实现，还需进一步研究，下面是链接：
+
+  > [Tomcat 系统架构与设计模式，第 1 部分: 工作原理](http://www.ibm.com/developerworks/cn/java/j-lo-tomcat1/)
 
 
 

@@ -59,9 +59,9 @@ public static void testForJDK17() {
 ```
  以下是具体描述
  >Area: HotSpot
-  >
-  >Synopsis: In JDK 7, interned strings are no longer allocated in the permanent generation of the Java heap, but are instead   allocated in the main part of the Java heap (known as the young and old generations), along with the other objects created by the application. This change will result in more data residing in the main Java heap, and less data in the permanent generation, and thus may require heap sizes to be adjusted. Most applications will see only relatively small differences in heap usage due to this change, but larger applications that load many classes or make heavy use of the String.intern() method will see more significant differences.
-   
+ >
+ >Synopsis: In JDK 7, interned strings are no longer allocated in the permanent generation of the Java heap, but are instead   allocated in the main part of the Java heap (known as the young and old generations), along with the other objects created by the application. This change will result in more data residing in the main Java heap, and less data in the permanent generation, and thus may require heap sizes to be adjusted. Most applications will see only relatively small differences in heap usage due to this change, but larger applications that load many classes or make heavy use of the String.intern() method will see more significant differences.
+
 ##路径获取
 ```java
         /**
@@ -120,3 +120,148 @@ a=110,b=0
 4
 ```
 
+## `bridge synthetic`方法
+
+在这次自己写一个类`spring`解析注解，以进一步熟悉反射的时候在`method`的方法里看到了`bridge synthetic`方法:
+
+```java
+    public boolean isBridge() {
+        return (getModifiers() & Modifier.BRIDGE) != 0;
+    }
+    public boolean isSynthetic() {
+        return Modifier.isSynthetic(getModifiers());
+    }
+```
+
+所以就研究了一把，原来这种情况是编译器为我们生成的，主要是编译器对以下的处理：
+
+1. 具体类型继承自一个泛型类，同时被继承的泛型类包含了泛型方法，由于类型擦除的原因编译器为具体类型生成了`bridge synthetic`方法，如下代码实现：
+
+   ```java
+   abstract class A<T> {
+       public abstract T method1(T arg);
+       public abstract T method2();
+   }
+    
+   class B extends A<String> {
+
+   	@Override
+   	public String method1(String arg) {
+   		// TODO Auto-generated method stub
+   		return null;
+   	}
+
+   	@Override
+   	public String method2() {
+   		// TODO Auto-generated method stub
+   		return null;
+   	}
+   }
+   ```
+
+   由于java的泛型在编译时类型擦除，A类的泛型会被替换为Object，而B类是String类型，这是两个不同的方法，不能标示为对抽象方法的重写，所以编译器在编译时生成了桥接方法以将这种重写关联，具体的字节码如下：
+
+   ```java
+   A.class
+
+   abstract class com.wyp.A {
+
+    public abstract java.lang.Object method1(java.lang.Object arg0);
+
+    public abstract java.lang.Object method2();
+
+   }
+
+   B.class
+
+   class com.wyp.B extends com.wyp.A {
+
+    public java.lang.String method1(java.lang.String arg);
+
+       0 aload_1 [arg]
+
+       1 areturn
+
+    public java.lang.String method2();
+
+       0 ldc <String "abc"> [20]
+
+       2 areturn
+
+    public bridge synthetic java.lang.Object method2();
+
+       0 aload_0 [this]
+
+       1 invokevirtual com.wyp.B.method2() : java.lang.String [23]
+
+       4 areturn
+
+     public bridge synthetic java.lang.Object method1(java.lang.Object arg0);
+
+       0 aload_0 [this]
+
+       1 aload_1 [arg0]
+
+       2 checkcast java.lang.String [26]
+
+       5 invokevirtual com.wyp.B.method1(java.lang.String) : java.lang.String [28]
+
+       8 areturn
+
+   }
+   ```
+
+   可见B字节码中生成了桥接方法`public bridge synthetic java.lang.Object method1(java.lang.Object arg0)`,并且其内部使用的是该类真实的`com.wyp.B.method1(java.lang.String)`方法。
+
+2. 第二种是子类实现了父类的方法，但子类方法返回值是父类相应方法返回值的类型或其子类型，例子如下：
+
+   ```java
+   class E {
+      
+   }
+    
+   class F extends E {
+      
+   }
+    
+   class X {
+       public E getE() {
+          return new E();
+       }
+   }
+    
+   class Y extends X {
+       @Override
+       public F getE() {
+          return new F();
+       }
+   }
+   ```
+
+   Y的字节码如下：
+
+   ```java
+   class com.wyp.Y extends com.wyp.X {
+
+     public com.wyp.F getE();
+
+       0 new com.wyp.F [16]
+
+       3 dup
+
+       4 invokespecial com.wyp.F() [18]
+
+       7 areturn
+
+    public bridge synthetic com.wyp.E getE();
+
+       0 aload_0 [this]
+
+       1 invokevirtual com.wyp.Y.getE() : com.wyp.F [20]
+
+       4 areturn
+
+   }
+   ```
+
+   可见编译器为子类生成了一个`bridge synthetic`方法`public bridge synthetic com.wyp.E getE()`,其内部调用的是该类自己实现的`com.wyp.F getE()`.
