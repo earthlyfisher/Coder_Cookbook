@@ -265,3 +265,41 @@ a=110,b=0
    ```
 
    可见编译器为子类生成了一个`bridge synthetic`方法`public bridge synthetic com.wyp.E getE()`,其内部调用的是该类自己实现的`com.wyp.F getE()`.
+
+## 加密后乱码的问题
+
+在项目做密码加密时，对加密后的`byte[]`通过`new String(byte[],charset)`的形式发现都是乱码，最后分析了下原因如下：
+
+`MD5, SHA-256, SHA-512` 等等算法，它们是通过对`byte[]` 进行各种变换和运算，得到加密之后的`byte[]`，那么这个加密之后的 `byte[]` 结果显然 就不会符合任何一种的编码方案，比如 `utf-8, GBK`等，因为加密的过程是任意对`byte[]`进行运算的。所以你用任何一种编码方案来解码 加密之后的 `byte[]` 结果，得到的都会是乱码。
+
+一般的实现思路是将每一个字节做16进制处理。
+
+## 针对`mybatis`批量`updte mysql`的问题
+
+对于批量update操作，由于每条sql以`;`分割，执行时会报错
+
+```
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select 'world'' at line 1
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+```
+
+若一个sql中通过分号分割(或包含)了多个独立sql的话,默认就会报上面的错误，当若显式设置allowMultiQueries为true的话,就可以正常执行不会报错.如下所示:
+
+```xml
+jdbc:mysql://localhost:3306?allowMultiQueries=true
+```
+
+mysql官方解释称：
+
+>allowMultiQueries
+>Allow the use of ';' to delimit multiple queries during one statement (true/false), defaults to 'false', and does not affect the addBatch() and executeBatch() methods, which instead rely on rewriteBatchStatements.
+>Default: false
+>Since version: 3.1.1
+
+
+
+
+
+
+
