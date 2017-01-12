@@ -292,10 +292,45 @@ jdbc:mysql://localhost:3306?allowMultiQueries=true
 
 mysql官方解释称：
 
->allowMultiQueries
+>**allowMultiQueries**
+>
 >Allow the use of ';' to delimit multiple queries during one statement (true/false), defaults to 'false', and does not affect the addBatch() and executeBatch() methods, which instead rely on rewriteBatchStatements.
 >Default: false
 >Since version: 3.1.1
+
+##关于mysql中文乱码的问题
+ 很巧，刚解决完上面的问题，又遇到了这个问题，看来技术提升过程就是不停解决问题的过程
+ 先来了解一下这个问题的背景：使用`spring boot+jpa+mysql`开发时，写入的中文是乱码。
+ 解决过程大概如下：
+1.  我先查看了数据库字符集信息：
+
+    ```mysql
+    SHOW VARIABLES LIKE 'char%';
+    ```
+
+    除了其他的，`character_set_server`的字符集为`latin`.
+
+    所以设置`character_set_server`的字符集，如下：
+
+    ```mysql
+    SET GLOBAL character_set_server = utf8;
+    ```
+
+    但是不起作用哈。
+
+2.  配置`my.ini`文件
+
+    既然上述方法不管用，还得从根上解决问题，所以就改`my.ini`文件，如下：
+
+    ```ini
+    [mysqld]
+    collation-server = utf8_unicode_ci
+    init-connect='SET NAMES utf8'
+    character-set-server = utf8
+    ```
+
+    再去查字符集信息，`SHOW VARIABLES LIKE 'char%';`，`character_set_server`的字符集以变为`utf8`.
+
 
 
 
