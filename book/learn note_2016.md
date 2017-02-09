@@ -268,6 +268,11 @@ HotSpot VM是一个典型的自适应动态编译系统，使用解释器或Clie
 2. synchronized
 
    * 基于方法和代码块的同步措施，能保证这个方法或代码块某一时刻只有一个线程在操作。
+      要点：
+   1. 对于实例方法的同步是通过acc_flags标志来实现的.在实例对象头部存放了对象的gc,同步监视器，如果是数组的话有长度等信息.如果方法设置了同步标志
+        会去判断同步监视器的使用情况，来决定是否能够占有同步锁.
+   2. 对于同步代码快，会在class文件有`monitorenter`和`monitorexit`字节码标识对实例对象的同步占有情况，他俩是一对的.
+   3. 自旋锁、锁优化、锁消除等
 
 3. ReentrantLock
 
@@ -351,7 +356,7 @@ HotSpot VM是一个典型的自适应动态编译系统，使用解释器或Clie
    * 线程中断
      * 由于对线程停止有些暴力，这里通过线程中断的方式通知线程你应该停下了，至于怎么处理，需要线程自己做处理。
      * 中断方法
-       * `interrupt()`通过线程需要中断。
+       * `interrupt()`通知线程需要中断。
        * `static boolean interrupted()`用于判断线程是否收到了中断信号，并且清除这个中断信号。
        * `isInterrupted()`判断线程是否被中断，即是否收到中断信号。
        * 例外：
@@ -609,7 +614,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 * `worker`模型
 
-在重新整理并重构项目的任务处理模块时，接触到了`worker`模型，该模型不干扰主程序功能层次，通过将任务交给第三方工人负责就ok啦，具体的执行和运作由Worker帮你完成（当然在同步串行性要求高的情况下这还有待商榷），但是就项目的一般处理或者更复杂的处理这是完全ok的。
+在重新整理并重构项目的任务处理模块时，接触到了`worker`模型，该模型不干扰主程序功能层次，通过将任务交给第三方工人(当然多任务的话,就是各包工头的概念,具体他将任务配发给线程池(多个工人),最终有具体的线程去执行)负责就ok啦，具体的执行和运作由Worker帮你完成（当然在同步串行性要求高的情况下这还有待商榷），但是就项目的一般处理或者更复杂的处理这是完全ok的。
 
 ![](../image/worker.png)
 
@@ -625,9 +630,9 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
   **Answer**
 
-  通过研究源码，直到是这么个过程：
+  通过研究源码，知道是这么个过程：
 
-  1. 在`classpath:/WEB-INF/lib/`下查找`jar`(在`/META-INF/services/`下有无文件名为`javax.servlet.ServletContainerInitializer`的文件)，如果有此文件，则解析此文件，将其字符串标识的类作为该Context的初始化器。
+  1. 在`classpath:/WEB-INF/lib/`下查找`jar`(在`/META-INF/services/`下有无文件名为`javax.servlet.ServletContainerInitializer`的文件，这是个约定吧)，如果有此文件，则解析此文件，将其字符串标识的类作为该Context的初始化器。
   2. 解析上面的Context的初始化器`@HandlesTypes`注解的values值，以标识该初始化器需要初始化那些类型(包括该类型的子类)。
   3. 在`classpath:/WEB-INF/classes/`下查找上面第二步values值所表示的类或者该类的子类，作为需要Set集合传入由该初始化器加载。
   4. 通过反射调用此初始化器的`onStartup(Set<Class<?>> webAppInitializerClasses, ServletContext servletContext)`启动。

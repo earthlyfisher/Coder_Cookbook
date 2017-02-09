@@ -3,18 +3,21 @@
 DI(依赖注入)是spring的核心功能之一。
 `Dependency Injection` 和 `Inversion of Control` 其实就是一个东西的两种不同的说法而已。本质上是一回事。`Dependency Injection` 是一个程序设计模式和架构模型， 一些时候也称作 `Inversion of Control`，尽管在技术上来讲，`Dependency Injection` 是一个 `Inversion of Control` 的特殊实现，`Dependency Injection` 是指一个对象应用另外一个对象来提供一个特殊的能力，例如：把一个数据库连接以参数的形式传到一个对象的结构方法里面而不是在那个对象内部自行创建一个连接。Inversion of Control 和 Dependency Injection 的基本思想就是把类的依赖从类内部转化到外部以减少依赖。 应用Inversion of Control，对象在被创建的时候，由一个调控系统内所有对象的外界实体，将其所依赖的对象的引用，传递给它。也可以说，依赖被注入到对象中。所以，Inversion of Control 是，关于一个对象如何获取他所依赖的对象的引用，这个责任的反转。IoC是通过处理对象定义依赖的方式来工作，也就是说，一起协作的对象，要么通过构造函数参数来获得，要么在构造之后给对象设置属性来获得，要么从工厂方法返回的方式来获得。容器先创建bean，然后再注入这些依赖。这个获取过程是完全反过来的，所以命名为控制反转(IoC)。
 DI能够删除任何特定的依赖于别的类或第三方接口的类，并且能够在初始化构造时加载要依赖的类。DI的优点是你可以依赖类的实现而并不需要更改你的代码。你甚至可以在接口不变的条件下重写依赖的实现而不用改变你的编码，即面向接口的编程。
-注入方式有两种：
+注入方式有三种：
 
 1. 构造器注入：通过构造器注入，能使当前实例作为不可变对象，并且能确保所有需要的依赖都是非空的.更进一步，构造器注入返回给客户代码的是一个完全初始化状态的对象.
 2. Setter方法注入：Setter方法注入作为构造器注入的补充实现.能注入可选的有默认值得依赖.否则，会随处校验依赖的非空与否.
+3. 自动装配(@Autowired):即通过注解自动装配，默认方式是`byType`.
 
 Spring容器会在容器加载时校验依赖非空和循环依赖.在初始化Bean时，Spring会在bean真正创建之前尽可能晚的设置属性和解决依赖关系.
 
 ##Spring beans定义和依赖实现方式
 *Spring的单例scope是容器级别的，即一个容器一个bean实例,spring的单例实例缓存在ConcurrentHashMap中;而GOF的单例模式是基于ClassLoader的，即一个类加载器只能有一个实例*
-###XML 文本文件
+### XML 文本文件
+
 通过XML文本文件构造Spring beans和依赖缺失了编译时的类型检查，任何问题比如构造器参数的类型错误，甚至是构造器错误的参数只有在application context在运行时构造时才会检查。
-###使用注解
+### 使用注解
+
 通过配置注解扫描的根包，并且在bean上使用注解@Service等标示他是一个bean
 ```java
 @Autowired
@@ -36,6 +39,12 @@ public class UserServiceImpl implements UserService
 
 *@Resource的 作用相当于@Autowired，只不过@Autowired按byType自动注入，而@Resource默认按 byName自动注入*
 *bean实例的初始化顺序：静态代码块(变量)-->实例代码块-->构造方法-->postConstruct-->init-->......-->preDestroy-->destroy*
+
+> 1. 对于上述的init方式，还可以通过实现`InitializingBean`接口来实现，但此种方式对业务代码有侵入性，少用。
+> 2. bean加载过程可以通过设置`factory-method`的方式设置工厂方法，来设置一些静态属性
+> 3. 调用`getter`方法，用工厂`Bean  PropertyPathFactoryBean`
+> 4. 调用普通方法(实例方法或者类方法)，用工厂`Bean  MethodInvokingFactoryBean`
+> 5. 获取Field的值，用工厂`Bean FieldRetrievingFactoryBean`
 
 ###配置解释
 ####`<context:annotation-config/>`
@@ -279,6 +288,8 @@ public class SpringServletContainerInitializer
 ```
 
 可以看到`SpringServletContainerInitializer`实现了`SpringServletContainerInitializer`,而`spring`通过注解`@HandlesTypes({WebApplicationInitializer.class})`来实现扫描`WebApplicationInitializer`该类，并将其注入到`Set集`.
+
+**注** ：*`@HandlesTypes` is used to declare the class types that a `ServletContainerInitializer` can handle.*
 
 一些链接：
 
