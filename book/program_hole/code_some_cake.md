@@ -21,11 +21,11 @@ public static void main(String[] args) {
 ```
 ##异常的分类
 所有异常都是Throwable的子类，根据使用类别分为Exception和Error，Error是由于系统问题造成的，如内存空间不足等，而Exception是具体的异常的父类，根据编译器和运行期分为受检查异常和运行时异常，具体的集成结构图如下:
-![](../image/exception  navigator.png)
+![](../../image/exception  navigator.png)
 ##代理模式和装饰模式的区别
 两者是相似，但是有些细微的区别，主要是方法粒度不一样，装饰模式一般只是对特定行为方法增加额外职责；而代理模式则是所有方法增加新职责，而且这个新职责是一个方面或一系列的，并且装饰模式可以有装饰链。
 其中java `IO`处理用到了装饰器模式,具体的层次结构如下图
-![](../image/io-decorator.png)
+![](../../image/io-decorator.png)
 ##i++,i=i++
 针对为什么`int i=1;i=i++;`后`i==1`，有疑惑，以下是相关字节码，释疑解惑啊.
 `i++`对应bytecode
@@ -44,7 +44,19 @@ public static void main(String[] args) {
 6: istore_0       #pop操作数栈顶值1到局部变量表，赋给i值为1
 7: return  
 ```
-##常量池的变化
+## `String.intern()`
+
+大体实现结构就是:
+JAVA 使用 jni 调用c++实现的`StringTable`的`intern`方法, `StringTable`的`intern`方法跟Java中的`HashMap`的实现是差不多的, 只是不能自动扩容。默认大小是1009。
+
+要注意的是，String的String Pool是一个固定大小的`Hashtable`，默认值大小长度是1009，如果放进String Pool的String非常多，就会造成`Hash`冲突严重，从而导致链表会很长，而链表长了后直接会造成的影响就是当调用`String.intern`时性能会大幅下降（因为要一个一个找）。
+
+在 jdk6中`StringTable`是固定的，就是1009的长度，所以如果常量池中的字符串过多就会导致效率下降很快。在jdk7中，StringTable的长度可以通过一个参数指定：
+```java
+-XX:StringTableSize=99991
+```
+## 常量池的变化
+
 JDK1.7的新变化，将`constant pool`从`pemgen`挪到了`heap`，对于`intern`操作首先判断对中有没有该常量的引用，如果没有，则直接此对象就成为常量，可通过以下代码查看。
 ```java
 public static void testForJDK17() {
@@ -277,16 +289,16 @@ mysql官方解释称：
 
 2.  配置`my.ini`文件
 
-     既然上述方法不管用，还得从根上解决问题，所以就改`my.ini`文件，如下：
+      既然上述方法不管用，还得从根上解决问题，所以就改`my.ini`文件，如下：
 
     ```ini
-     [mysqld]
-     collation-server = utf8_unicode_ci
-     init-connect='SET NAMES utf8'
-     character-set-server = utf8
+      [mysqld]
+      collation-server = utf8_unicode_ci
+      init-connect='SET NAMES utf8'
+      character-set-server = utf8
     ```
 
-     再去查字符集信息，`SHOW VARIABLES LIKE 'char%';`，`character_set_server`的字符集以变为`utf8`.
+      再去查字符集信息，`SHOW VARIABLES LIKE 'char%';`，`character_set_server`的字符集以变为`utf8`.
 
 
 
