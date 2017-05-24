@@ -1,4 +1,4 @@
-Docker默认是没有开启HTTP远程访问的，默认只支持通过unix socket通信操作docker daemon,需要使用HTTP restful接口需要修改配置。
+Docker默认是没有开启HTTP远程访问的，默认只支持通过unix socket通信操作docker daemon,使用HTTP restful接口需要修改配置。
 
 **步骤如下:**
 
