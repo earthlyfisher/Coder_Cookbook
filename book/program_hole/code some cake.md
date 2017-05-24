@@ -77,49 +77,6 @@ public static void testForJDK17() {
 	     */
 		System.out.println(this.getClass().getClassLoader().getSystemResource(""));
 ```
-##关于类加载过程的一个比较有特点的例子
-```java
-public class StaticTest
-{
-    public static void main(String[] args)
-    {
-        staticFunction();
-    }
- 
-    static StaticTest st = new StaticTest();
- 
-    static
-    {
-        System.out.println("1");
-    }
- 
-    {
-        System.out.println("2");
-    }
- 
-    StaticTest()
-    {
-        System.out.println("3");
-        System.out.println("a="+a+",b="+b);
-    }
- 
-    public static void staticFunction(){
-        System.out.println("4");
-    }
- 
-    int a=110;
-    static int b =112;
-}
-```
-***
-```
-2
-3
-a=110,b=0
-1
-4
-```
-
 ## `bridge synthetic`方法
 
 在这次自己写一个类`spring`解析注解，以进一步熟悉反射的时候在`method`的方法里看到了`bridge synthetic`方法:
@@ -320,16 +277,16 @@ mysql官方解释称：
 
 2.  配置`my.ini`文件
 
-    既然上述方法不管用，还得从根上解决问题，所以就改`my.ini`文件，如下：
+     既然上述方法不管用，还得从根上解决问题，所以就改`my.ini`文件，如下：
 
     ```ini
-    [mysqld]
-    collation-server = utf8_unicode_ci
-    init-connect='SET NAMES utf8'
-    character-set-server = utf8
+     [mysqld]
+     collation-server = utf8_unicode_ci
+     init-connect='SET NAMES utf8'
+     character-set-server = utf8
     ```
 
-    再去查字符集信息，`SHOW VARIABLES LIKE 'char%';`，`character_set_server`的字符集以变为`utf8`.
+     再去查字符集信息，`SHOW VARIABLES LIKE 'char%';`，`character_set_server`的字符集以变为`utf8`.
 
 
 

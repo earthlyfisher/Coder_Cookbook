@@ -1,43 +1,41 @@
+  **Content**
 
-java是毕业后工作中用到的第一语言，在工作中使用了快4年了，现回过头来整理了下这些年学习和工作中对这门语言的爱和恨.
-从语言本身来讲，注重的还是思想，现将领会的一些点例述如下：
-
-1. 所有东西都是对象
-2. 程序是一大堆对象的组合
-3. 每个对象都有自己的存储空间，可容纳其他对象。
-4. 每个对象都有一种类型。
-5. 同一类所有对象都能接收相同的消息。
-6. 类是接口的一种特殊实现方式。
-7. 接口实现了方法的实现方式的隐藏。
-8. 组合增加了方案的重复使用。
-9. 继承扩展基础类，即可以改善基础类，通过多重继承可以实现等价与类似的关系。
-10. 多态实现了多形对象的互换使用(采用动态绑定)。
-11. java:单根结构，所有对象都是Object的子类(对所有对象都有一些特定的方法);
-12. 用继承表示行为的差异，用组合表示行为状态的变化。
-13. 集合与迭代器:迭代器提供了对集合类的修改操作.
-
-------
-
-以下是这些年的一些例子和遇到的坑：
-* [遇到的一些坑](book/java some cake.md)
-* [java并发的一些案例](book/JUC案例.md)
-* [一些NIO使用案例](book/NIO.md)
-* [序列化](book/序列化.md)
-* [集合使用](book/集合要点.md)
-* [单例模式实现](book/Singleton Pattern.md)
-* [Spring的细节](book/Spring.md)
-* [java复制文件的几种方式](book/java复制文件的几种方式.md)
-* [AsynTask回调机制](book/AsynTask回调机制.md)
-* [Threadlocal使用详解](book/Threadlocal使用详解.md)
-* [一次环境部署之旅](book/一次环境部署之旅.md)
-* [Redis之旅](book/Redis之旅.md)
-* [WebSocket示例](book/websocket示例.md)
-* [git使用问题总结](book/git使用问题总结.md)
-
-
-
-
-
-
-
+* 1.Code_Journey
+  * 1.1.Java
+    * 1.1.1.[数据结构及Java集合要点](./book/Code_Journey/Java/数据结构及Java集合要点.md)
+    * 1.1.2.io
+      -  [java复制文件的几种方式](./book/Code_Journey/Java/io/java复制文件的几种方式.md)
+      -  [NIO](./book/Code_Journey/Java/io/NIO.md)
+      - [序列化](./book/Code_Journey/Java/io/序列化.md)
+    * 1.1.3.Java_In_JVM
+      - [JVM处理方法调用和返回](./book/Code_Journey/Java/Java_In_JVM/JVM处理方法调用和返回.md)
+      - [类加载器](./book/Code_Journey/Java/Java_In_JVM/类加载器.md)
+    * 1.1.4.多线程
+      - [thread笔记](./book/Code_Journey/Java/多线程/thread笔记.md)
+      - [线程回调实现](./book/Code_Journey/Java/多线程/线程回调实现.md)
+      - [Threadlocal使用详解](./book/Code_Journey/Java/多线程/Threadlocal使用详解.md)
+      - [J.U.C包下工具案例](./book/Code_Journey/Java/多线程/J.U.C包下工具案例.md)
+    * 1.1.5.framework
+      - [Spring那些事](./book/Code_Journey/Java/framework/Spring那些事.md)
+      - [Redis之旅](./book/Code_Journey/Java/framework/Redis之旅.md)
+      - [websocket示例](./book/Code_Journey/Java/framework/websocket示例.md)
+* 2.Think_In_Code
+  * 2.1.[OOP](./book/Think_In_Code/OOP.md)
+* 3.UML&Design_pattern
+  - 3.1.[UML初识](./book/UML&Design_pattern/UML初识.md)
+  - 3.2.[设计模式思考](./book/UML&Design_pattern/设计模式思考.md)
+* 4.program_hole
+  * 4.1.[code some cake](./book/program_hole/code some cake.md)
+  * 4.2.[solution-docker rest port not bind](./book/program_hole/solution-docker rest port not bind.md)
+* 5.os_cloud
+  * 5.1.[鸟哥笔记](./book/os_cloud/鸟哥笔记.md)
+  * 5.2.[linux命令行](./book/os_cloud/linux命令行.md)
+  * 5.3[一次环境部署之旅](./book/os_cloud/一次环境部署之旅.md)
+* 6.tools
+  - 6.1.[Springboot关于idea中devtools不起作用的问题](./book/tools/Springboot关于idea中devtools不起作用的问题.md)
+  - 6.2.[git使用问题总结](./book/tools/git使用问题总结.md)
+* 7.code_life
+  * 7.1.[code_life_2016](./book/code_life/code_life_2016.md)
+* 8.earthly_fisher
+  * 8.1[one solely，one nice](./book/earthly_fisher/one solely，one nice.md)
 

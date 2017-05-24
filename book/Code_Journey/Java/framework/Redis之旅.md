@@ -1,19 +1,25 @@
-`Redis`ÊÇÒ»¸ö¿ªÔ´µÄ£¬»ùÓÚ`key-value`´æ´¢£¬¿ÉÓÃÀ´¹¹½¨¸ßĞÔÄÜ£¬¿ÉÀ©Õ¹µÄÓ¦ÓÃ³ÌĞò.ÄÚ²¿´æ´¢ÆäÊµ´æ´¢µÄÊÇ¶ş½øÖÆ£¬´æÈ¡Ê±Í¨¹ıĞòÁĞ»¯·´ĞòÁĞ»¯²Ù×÷.
-#¼òÒª¸ÅÊö
-Ö÷ÒªÌØµã£º
-*.	`Redis`ÊÇÍêÈ«ÔÚÄÚ´æÖĞ±£´æÊı¾İµÄÊı¾İ¿â£¬Ê¹ÓÃ´ÅÅÌÖ»ÊÇÎªÁË³Ö¾ÃĞÔÄ¿µÄ 
-*.	`Redis`Ïà±ÈĞí¶à¼üÖµÊı¾İ´æ´¢ÏµÍ³ÓĞÏà¶Ô·á¸»µÄÊı¾İÀàĞÍ,ÓĞ`String`,`Set`,`Map`,`List`
-*.	`Redis`¿ÉÒÔ½«Êı¾İ¸´ÖÆµ½ÈÎÒâÊıÁ¿µÄ´Ó·şÎñÆ÷ÖĞ
-ÓÅµã:
-*.	ËÙ¶ÈºÜ¿ì
-*.	¿ÉÖ§³ÖµÄÊı¾İÀàĞÍ·á¸»
-*.	²Ù×÷ÊÇÔ­×Ó²Ù×÷
-*.	¶à¹¦ÄÜÊµÓÃ¹¤¾ß
+# ç®€è¦æ¦‚è¿°
+
+`Redis`æ˜¯ä¸€ä¸ªå¼€æºçš„ï¼ŒåŸºäº`key-value`å­˜å‚¨ï¼Œå¯ç”¨æ¥æ„å»ºé«˜æ€§èƒ½ï¼Œå¯æ‰©å±•çš„åº”ç”¨ç¨‹åº.å†…éƒ¨å­˜å‚¨å…¶å®å­˜å‚¨çš„æ˜¯äºŒè¿›åˆ¶ï¼Œå­˜å–æ—¶é€šè¿‡åºåˆ—åŒ–ååºåˆ—åŒ–æ“ä½œ.
+
+ä¸»è¦ç‰¹ç‚¹ï¼š
+
+* `Redis`æ˜¯å®Œå…¨åœ¨å†…å­˜ä¸­ä¿å­˜æ•°æ®çš„æ•°æ®åº“ï¼Œä½¿ç”¨ç£ç›˜åªæ˜¯ä¸ºäº†æŒä¹…æ€§ç›®çš„ 
+* `Redis`ç›¸æ¯”è®¸å¤šé”®å€¼æ•°æ®å­˜å‚¨ç³»ç»Ÿæœ‰ç›¸å¯¹ä¸°å¯Œçš„æ•°æ®ç±»å‹,æœ‰`String`,`Set`,`Map`,`List`
+* `Redis`å¯ä»¥å°†æ•°æ®å¤åˆ¶åˆ°ä»»æ„æ•°é‡çš„ä»æœåŠ¡å™¨ä¸­
+
+ä¼˜ç‚¹:
+
+* é€Ÿåº¦å¾ˆå¿«
+* å¯æ”¯æŒçš„æ•°æ®ç±»å‹ä¸°å¯Œ
+* æ“ä½œæ˜¯åŸå­æ“ä½œ
+* å¤šåŠŸèƒ½å®ç”¨å·¥å…·
+
 #`Spring-data-Redis`
-ÓÉÓÚÊ¹ÓÃSpring±È½Ï¶à,ÏÖÕ¹Ê¾SpringÓëRedis¼¯³ÉµÄ²Ù×÷.
-##jar°üÏÂÔØ
+ç”±äºä½¿ç”¨Springæ¯”è¾ƒå¤š,ç°å±•ç¤ºSpringä¸Redisé›†æˆçš„æ“ä½œ.
+##jaråŒ…ä¸‹è½½
 jedis-**.jar,spring-data-redis-**.jar
-##²ÎÊıÅäÖÃ
+##å‚æ•°é…ç½®
 ```java
 redis.pool.maxActive=1024  
 redis.pool.maxIdle=200  
@@ -25,7 +31,7 @@ redis.host=localhost
 #Port  
 redis.port=6379  
 ```
-##Spring¼¯³ÉÅäÖÃ
+##Springé›†æˆé…ç½®
 ```java
 <bean id="prop"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -66,10 +72,10 @@ redis.port=6379
 				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
 		</property>
 	</bean>
-	```
-##Êı¾İÔ´Ê¹ÓÃ
-Í¨¹ı`redisTemplate`²Ù×÷¾ßÌåµÄÊı¾İÔöÉ¾¸Ä²éµÈ.
-###»ùÀàÓÃÀ´³éÀë¹²ÓĞµÄÊôĞÔ
+```
+##æ•°æ®æºä½¿ç”¨
+é€šè¿‡`redisTemplate`æ“ä½œå…·ä½“çš„æ•°æ®å¢åˆ æ”¹æŸ¥ç­‰.
+###åŸºç±»ç”¨æ¥æŠ½ç¦»å…±æœ‰çš„å±æ€§
 ```java
 public class RedisBaseDao<K,V> {
 
@@ -82,22 +88,22 @@ public class RedisBaseDao<K,V> {
 	
 }
 ```
-###Ôö¼Ó
-²Ù×÷`HashOperations`
+###å¢åŠ 
+æ“ä½œ`HashOperations`
 ```java
-// Í¨¹ıhashmap´æ´¢
+// é€šè¿‡hashmapå­˜å‚¨
 if (hashOperations.hasKey(KEY, entity.getName())) {
 	delete(entity);
 	}
 hashOperations.put(KEY, entity.getName(), entity);
 ```
-²Ù×÷`ListOperations`
+æ“ä½œ`ListOperations`
 ```java
-// Í¨¹ılist¶ÓÁĞ´æ´¢
+// é€šè¿‡listé˜Ÿåˆ—å­˜å‚¨
 // Queue LILO
 long count = redisTemplate.opsForList().rightPush(KEY, entity);
 ```
-¿ÉÒÔÍ¨¹ı×Ô¼ºĞòÁĞ»¯À´´¦Àí
+å¯ä»¥é€šè¿‡è‡ªå·±åºåˆ—åŒ–æ¥å¤„ç†
 ```java
 long count = redisTemplate.execute(new RedisCallback<Long>() {
 			public Long doInRedis(RedisConnection connection) throws DataAccessException {
@@ -108,27 +114,27 @@ long count = redisTemplate.execute(new RedisCallback<Long>() {
 			}
 		});
 ```
-###É¾³ı
+###åˆ é™¤
 ```java
 long count = hashOperations.delete(KEY, entity.getName());
 ```
-###²éÕÒ
-²Ù×÷`HashOperations`
+###æŸ¥æ‰¾
+æ“ä½œ`HashOperations`
 ```java
 hashOperations.multiGet(KEY, hashOperations.keys(KEY))
 ```
-²Ù×÷`ListOperations`
+æ“ä½œ`ListOperations`
 ```java
 public Customer get(Customer entity) {
 		ListOperations<String, Customer> list = redisTemplate.opsForList();
 		List<Customer> lists = list.range(KEY, 0, -1);
-		// ´Ë´¦ÓÉÓÚÅäÓĞÄ¬ÈÏµÄKEYSerializer,ËùÒÔ²»ÓÃ×öĞòÁĞ»¯´¦Àí
+		// æ­¤å¤„ç”±äºé…æœ‰é»˜è®¤çš„KEYSerializer,æ‰€ä»¥ä¸ç”¨åšåºåˆ—åŒ–å¤„ç†
 		return list.leftPop(KEY);
 	}
 ```
-###ÅÅĞò
+###æ’åº
 ```java
-//sort,²»ÄÜÊ¹ÓÃuser×÷ÎªkeyÖµ
+//sort,ä¸èƒ½ä½¿ç”¨userä½œä¸ºkeyå€¼
 		List<Object> lst=hashOperations.multiGet(KEY, hashOperations.keys(KEY));
 		Customer[] arrays=new Customer[lst.size()];
 		for(int i=0;i<lst.size();i++){
@@ -138,8 +144,8 @@ public Customer get(Customer entity) {
         String setKey = "not use user for key"; 
         setOper.add(setKey,arrays);
         SortQueryBuilder<String> builder = SortQueryBuilder.sort(setKey);  
-        builder.alphabetical(true);//¶Ô×Ö·û´®Ê¹ÓÃ¡°×ÖµäË³Ğò¡±  
-        builder.order(Order.DESC);//µ¹Ğò  
+        builder.alphabetical(true);//å¯¹å­—ç¬¦ä¸²ä½¿ç”¨â€œå­—å…¸é¡ºåºâ€  
+        builder.order(Order.DESC);//å€’åº  
         builder.limit(0, 2);  
         //builder.limit(new Range(0, 2));  
         List<Customer> results = redisTemplate.sort(builder.build());  
@@ -147,11 +153,10 @@ public Customer get(Customer entity) {
             System.out.println(item);  
         }
 ```
+*Rediså­˜å‚¨æ—¶ä¸èƒ½ä½¿ç”¨userä½œä¸ºkeyå€¼*
 ------------------
-*Redis´æ´¢Ê±²»ÄÜÊ¹ÓÃuser×÷ÎªkeyÖµ*
-------------------
-##ÊÂÎñ¹ÜÀí
-Ê¹ÓÃÆÕÍ¨µÄJedis¿ÉÒÔÍ¨¹ı`multi`À´¿ªÆôÊÂÎñ£¬Í¨¹ı`exec`Ìá½»,`discard`»Ø¹ö.
+##äº‹åŠ¡ç®¡ç†
+ä½¿ç”¨æ™®é€šçš„Jediså¯ä»¥é€šè¿‡`multi`æ¥å¼€å¯äº‹åŠ¡ï¼Œé€šè¿‡`exec`æäº¤,`discard`å›æ»š.
 ```java
         Jedis jedis=RedisUtils.getJedis();
 		Transaction tx=jedis.multi();
@@ -169,18 +174,18 @@ public Customer get(Customer entity) {
 			jedis.disconnect();
 		}
 ```
-Í¨¹ıSpring¹ÜÀí
-Ê×ÏÈÔÚÅäÖÃÎÄ¼şÖĞ¿ªÆô`enableTransactionSupport`£¬¼´£º
+é€šè¿‡Springç®¡ç†
+é¦–å…ˆåœ¨é…ç½®æ–‡ä»¶ä¸­å¼€å¯`enableTransactionSupport`ï¼Œå³ï¼š
 ```
    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
 		<property name="connectionFactory" ref="redisConnectFactory" />
-		<!-- p:enableTransactionSupport ĞèÒªÉèÖÃÎªtrue,²ÅÄÜ¿ªÆôRedisÊÂÎñ¹ÜÀí¿ØÖÆ -->
+		<!-- p:enableTransactionSupport éœ€è¦è®¾ç½®ä¸ºtrue,æ‰èƒ½å¼€å¯Redisäº‹åŠ¡ç®¡ç†æ§åˆ¶ -->
 		<property name="enableTransactionSupport" value="true" />
 	</bean>
 ```
-È»ºóÔÚ·½·¨ÖĞÊ¹ÓÃ,ÀıÈç£º
+ç„¶ååœ¨æ–¹æ³•ä¸­ä½¿ç”¨,ä¾‹å¦‚ï¼š
 ```java
 @Transactional(propagation=Propagation.REQUIRED)
 public UserType registerUser(Customer customer) {
 ```
-»áÔÚ·½·¨Ö´ĞĞÇ°Ä¬ÈÏ`multi`À´¿ªÆôÊÂÎñ£¬½áÊøºóÍ¨¹ı`exec`Ìá½»,Òì³£ºóÍ¨¹ı`discard`»Ø¹ö.
+ä¼šåœ¨æ–¹æ³•æ‰§è¡Œå‰é»˜è®¤`multi`æ¥å¼€å¯äº‹åŠ¡ï¼Œç»“æŸåé€šè¿‡`exec`æäº¤,å¼‚å¸¸åé€šè¿‡`discard`å›æ»š.
