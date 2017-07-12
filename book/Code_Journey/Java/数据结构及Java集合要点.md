@@ -26,7 +26,7 @@ Map
 
 `HashMap`是基于`hash`算法实现的，通过hash因子的作用，将元素"比较平均"的分散，以提高元素查找的命中率.具体的实现原理如下图：
 
-![](../image/HashMap.png)
+![](../../../image/HashMap.png)
 
 `HashMap`是非线程安全的，允许`null key`,当`threshold=capacity*loadfactor`时会扩容为`capacity<<1`,这里`capacity`为桶的数量.
 
@@ -122,7 +122,7 @@ public synchronized V put(K key, V value) {
 
 `ConcurrentHashMap`的结构图大致如下：
 
-![](../image/ConcurrentHashMap.png)
+![](../../../image/ConcurrentHashMap.png)
 
 从图可知就是把以前的`HashTable`分成了16份而已,将锁粒度降低了.
 
@@ -264,9 +264,9 @@ A：我所知道的四种：
 `Arraylist`的实现是基于数组的，初始数组大小为10,容量不足时扩展为原来的`1.5`倍.
 
 ## ConcurrentModificationException while Iterating over ArrayList
- ![](../image/ConcurrentModificationException while Iterating over ArrayList.png)
+ ![](../../../image/ConcurrentModificationException while Iterating over ArrayList.png)
 
 ## 3 ways to find duplicate elements in an array Java
- ![](../image/3 ways to find duplicate elements in an array Java.png)
+ ![](../../../image/3 ways to find duplicate elements in an array Java.png)
 
 

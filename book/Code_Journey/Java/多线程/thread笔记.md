@@ -123,7 +123,7 @@ public static void main(String[] args) throws InterruptedException {
 `ReentrantLock`可重入锁功能和`synchronized`类似，但它很灵活，能灵活的处理锁的获取和释放以及
 在不同条件下对对象监视的`await/signal`.其提供的方法如下：
 
-![](../../image/ReentrantLock_method.png)
+![](../../../../image/ReentrantLock_method.png)
 
 其中各方法如下：
 

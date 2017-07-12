@@ -23,7 +23,7 @@ java虚拟机作为真正运行java系统以及处理class文件的一个平台�
 
 GC，即垃圾回收，主要针对的是堆区。由于大多数对象是使用完就无用，会被回收的，所以依据次规律JVM将内存又分代存储,分为年轻代、老年代、持久代。年轻代和老年代在堆区，持久代在方法区.
 
-![](../image/jvm.jpg)
+![](../../image/jvm.jpg)
 
 1. 对象优先分配在年轻代，年轻代采用停止复制算法进行内存的回收。
    * 年轻代又分为`Eden`，`surivor from`,`surivor  to`三块区间.其中默认大小Eden/surivor=8/1.
@@ -251,7 +251,7 @@ HotSpot VM是一个典型的自适应动态编译系统，使用解释器或Clie
 
 ​     计算机存储模型是cpu每次都操作缓存里的数据，该缓存的数据都是通过内存中而来，而java也有自己的内存模型，如下图，线程每次操作的数据都是工作内存中数据，工作内存中数据是主内存中数据的拷贝(当然一个100M的大对象不可能全部拷贝，有一种策略，还需进一步学习),每次完成后再写入到主内存。
 
-![](../image/jmm.jpg)
+![](../../image/jmm.jpg)
 
 *如果硬要与传统堆栈模型做类比的话，主内存相当于堆，工作内存相当于栈，并且牵扯到这种模型的数据一般不包括局部变量，调用方法传入的参数，当然对于引用类型，只能保证栈帧中的引用没有线程同步的影响.*
 
@@ -616,7 +616,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 在重新整理并重构项目的任务处理模块时，接触到了`worker`模型，该模型不干扰主程序功能层次，通过将任务交给第三方工人(当然多任务的话,就是各包工头的概念,具体他将任务配发给线程池(多个工人),最终有具体的线程去执行)负责就ok啦，具体的执行和运作由Worker帮你完成（当然在同步串行性要求高的情况下这还有待商榷），但是就项目的一般处理或者更复杂的处理这是完全ok的。
 
-![](../image/worker.png)
+![](../../image/worker.png)
 
 上图是基本的实现思想。
 
@@ -677,7 +677,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
   下面是一张tomcat的实现基本结构图：
 
-  ![](../image/tomcat-struct.gif)
+  ![](../../image/tomcat-struct.gif)
 
   具体的实现，还需进一步研究，下面是链接：
 
