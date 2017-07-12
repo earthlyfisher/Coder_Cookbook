@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService
 
 ### `bean`生命周期
 
-![](../image/beanlifecycle.png)
+![](../../../../image/beanlifecycle.png)
 
 ### `bean`的作用域
 
