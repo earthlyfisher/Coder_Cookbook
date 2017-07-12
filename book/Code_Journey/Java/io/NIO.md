@@ -41,4 +41,4 @@
 
 **Difference between Direct and Mapped ByteBuffer in Java**
 
-![](../../../../image/Difference between Direct and Mapped ByteBuffer in Java.jpg)
+![](../../../../image/Difference-between-Direct-and-Mapped-ByteBuffer-in-Java.jpg)

@@ -264,9 +264,9 @@ A：我所知道的四种：
 `Arraylist`的实现是基于数组的，初始数组大小为10,容量不足时扩展为原来的`1.5`倍.
 
 ## ConcurrentModificationException while Iterating over ArrayList
- ![](../../../image/ConcurrentModificationException while Iterating over ArrayList.png)
+ ![](../../../image/ConcurrentModificationException-while-Iterating-over-ArrayList.png)
 
 ## 3 ways to find duplicate elements in an array Java
- ![](../../../image/3 ways to find duplicate elements in an array Java.png)
+ ![](../../../image/3-ways-to-find-duplicate-elements-in-an-array-Java.png)
 
 
